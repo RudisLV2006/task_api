@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
 
-class TaskController extends Controller
+class TaskController extends Controller implements HasMiddleware
 {
+    public static function middleware(){
+        return [
+            new Middleware("auth:sanctum", except : ["index","show"])
+        ];
+    } 
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +33,7 @@ class TaskController extends Controller
             "due_time"=>"date|nullable"
         ]);
 
-        $task = Task::create($fields);
+        $task = $request->user()->tasks()->create($fields);
 
         return [
             "task"=>$task
