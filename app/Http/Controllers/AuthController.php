@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use \Hash;
 
 class AuthController extends Controller
 {
@@ -35,13 +36,15 @@ class AuthController extends Controller
             return ["message"=>"The provided credentials are incorrect"];
         }
         $token = $user->createToken($user->name);
-        
+
         return [
             "user"=> $user,
             "token"=> $token->plainTextToken
         ];
     }
-    public function logout(){
-        return "logout";
+    public function logout(Request $request){
+        $request->user()->tokens()->delete();
+
+        return ["message"=>"You are logged out"];
     }
 }
