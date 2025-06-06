@@ -17,3 +17,4 @@ Route::post("/logout",[AuthController::class, "logout"])->name("logout")->middle
 Route::apiResource("task", TaskController::class);
 
 Route::post("/task/{task}/subtask", [SubtaskController::class,"store"])->name("subtask.store");
+Route::get("/task/{task}/subtask", [SubtaskController::class,"index"])->name("subtask.index");
