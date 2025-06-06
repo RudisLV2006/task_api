@@ -18,9 +18,9 @@ return new class extends Migration
         });
 
         DB::table('task_statuses')->insert([
-            ['name' => 'Pending', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'In Progress', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Completed', 'created_at' => now(), 'updated_at' => now()],
+            ['status' => 'Pending', 'created_at' => now(), 'updated_at' => now()],
+            ['status' => 'In Progress', 'created_at' => now(), 'updated_at' => now()],
+            ['status' => 'Completed', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
