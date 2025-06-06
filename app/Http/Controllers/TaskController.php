@@ -40,15 +40,26 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return [
+            "task"=>$task
+        ];
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(Request $request, Task $task)
     {
-        //
+        $fields = $request->validate([
+            "title"=>"required|max:120",
+            "description"=>"required",
+            "due_time"=>"date|nullable"
+        ]);
+        $task->update($fields);
+
+        return [
+            "task"=>$task
+        ];
     }
 
     /**
@@ -56,6 +67,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return [
+            "message"=>"Task deleted"
+        ];
     }
 }
