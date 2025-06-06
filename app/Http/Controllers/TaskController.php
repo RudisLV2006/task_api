@@ -6,6 +6,7 @@ use App\Models\Task;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller implements HasMiddleware
 {
@@ -55,6 +56,7 @@ class TaskController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Task $task)
     {
+        Gate::authorize('modify',$task);
         $fields = $request->validate([
             "title"=>"required|max:120",
             "description"=>"required",
@@ -72,6 +74,8 @@ class TaskController extends Controller implements HasMiddleware
      */
     public function destroy(Task $task)
     {
+        Gate::authorize('modify',$task);
+        
         $task->delete();
 
         return [
