@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Models\User;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -23,8 +23,23 @@ class AuthController extends Controller
             "token"=> $token->plainTextToken
         ];
     }
-    public function login(){
-        return "login";
+    public function login(Request $request){
+        $request->validate([
+            "email"=>"required|email|exists:users",
+            "password"=>"required"
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user||!Hash::check($request->password,$user->password)){
+            return ["message"=>"The provided credentials are incorrect"];
+        }
+        $token = $user->createToken($user->name);
+        
+        return [
+            "user"=> $user,
+            "token"=> $token->plainTextToken
+        ];
     }
     public function logout(){
         return "logout";
